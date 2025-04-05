@@ -2,6 +2,9 @@
 
 namespace Modules\UserModule\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -12,7 +15,7 @@ class UserModuleController extends Controller
      */
     public function index()
     {
-        return view('usermodule::index');
+        return response()->json(User::all());
     }
 
     /**

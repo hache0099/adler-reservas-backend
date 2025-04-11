@@ -17,8 +17,8 @@ class LoginTest extends TestCase
     {
         
         $response = $this->post('/api/v1/auth/login', [
-            'email' => 'test2@example.com',
-            'password' => 'Contraseña',
+            'email' => 'palaciohector00@gmail.com',
+            'password' => 'contraseña',
         ]);
 
         $response->assertStatus(200);
@@ -28,8 +28,8 @@ class LoginTest extends TestCase
     public function test_user_can_see_routes(): void
     {
         $response = $this->post('/api/v1/auth/login', [
-            'email' => 'test2@example.com',
-            'password' => 'Contraseña',
+            'email' => 'palaciohector00@gmail.com',
+            'password' => 'contraseña',
         ]);
 
         $token = $response->json('token');
@@ -37,6 +37,7 @@ class LoginTest extends TestCase
 
         $response = $this->withHeaders(['Authorization' => "Bearer {$token}"])->get('/api/v1/user');
 
-        dd($response->json());
+        //dd($response->json());
+        $response->assertJsonStructure(['id', 'email', 'email_verified_at', 'created_at', 'updated_at', 'persona_id', 'perfil_id']);
     }
 }

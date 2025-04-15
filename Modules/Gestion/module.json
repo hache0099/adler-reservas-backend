@@ -1,0 +1,11 @@
+{
+    "name": "Gestion",
+    "alias": "gestion",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Gestion\\Providers\\GestionServiceProvider"
+    ],
+    "files": []
+}

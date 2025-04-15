@@ -170,7 +170,7 @@ return [
         |
         */
 
-        'base_files' => false,
+        'base_files' => true,
 
         /*
         |--------------------------------------------------------------------------
@@ -285,6 +285,11 @@ return [
             'password_resets',
             'personal_access_tokens',
             'password_reset_tokens',
+            'sessions',
+            'cache',
+            'cache_locks',
+            'jobs',
+            'jobs_batches',
         ],
 
         /*

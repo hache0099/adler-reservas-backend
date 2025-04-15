@@ -20,7 +20,7 @@ class LoginTest extends TestCase
             'email' => 'palaciohector00@gmail.com',
             'password' => 'contraseña',
         ]);
-
+        dd($response->json());
         $response->assertStatus(200);
         
     }

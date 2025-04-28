@@ -1,4 +1,7 @@
 {
     "Auth": true,
-    "UserModule": true
+    "UserModule": true,
+    "Gestion": true,
+    "Reserva": true,
+    "Cancha": true
 }

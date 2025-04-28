@@ -23,7 +23,7 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->with(['persona:id,nombre,apellido'])->first();
             $token = $user->createToken('auth_token')->plainTextToken;
             return response()->json(['token' => $token, 'user' => $user]);
         }
@@ -34,7 +34,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        auth()->user()->tokens()->delete();
+        Auth::user()->tokens()->delete();
         return response()->json(['message' => 'Sesión cerrada']);
     }
 

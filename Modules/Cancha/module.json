@@ -1,0 +1,11 @@
+{
+    "name": "Cancha",
+    "alias": "cancha",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Cancha\\Providers\\CanchaServiceProvider"
+    ],
+    "files": []
+}

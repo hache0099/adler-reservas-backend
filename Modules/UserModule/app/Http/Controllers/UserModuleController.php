@@ -8,6 +8,8 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserModuleController extends Controller
 {
@@ -16,7 +18,7 @@ class UserModuleController extends Controller
      */
     public function index()
     {
-        return response()->json(User::all());
+        return response()->json(User::with(['perfile' ,'persona.persona_documento'])->get());
     }
 
     /**
@@ -53,14 +55,54 @@ class UserModuleController extends Controller
         );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function changePassword(Request $request)
     {
-        return view('usermodule::edit');
+        $request->validate([
+            'id' => 'required',
+            'currentPassword' => 'required',
+            'newPassword' => 'required|min:8'
+        ]);
+        $user = User::findOrFail($request->id);
+        //return $request;
+
+         if(!Hash::check($request->currentPassword, $user->password))
+        {
+            return response()->json(['current_password' => 'Contraseña incorrecta'], 400);
+        }
+        
+        
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        return response()->json(['success' => 'La contraseña se ha cambiado con éxito'], 200);
     }
 
+    public function updatePerfil(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'perfil_id' => 'required|numeric',
+        ]);
+         DB::beginTransaction();
+
+        try {
+            $user->update([
+                'perfil_id' => $request->perfil_id,
+            ]);
+
+            DB::commit();
+
+            return response()->json(['mensaje' => 'se ha actualizado correctamente'],200);
+        } catch (Throwable $e) {
+            DB::rollBack();
+
+            return response()->json(['mensaje' => "Hubo un error: $e->getMessage()"],400);
+        }
+        
+        
+    }
+    
     /**
      * Update the specified resource in storage.
      */
@@ -81,13 +123,15 @@ class UserModuleController extends Controller
             'contacto.descripcion' => 'sometimes|required|string|max:50',
             
             'domicilio.detalle' => 'sometimes|required|string|max:255',
-            'domicilio.tipo_domicilio_id' => 'sometimes|required|exists:tipo_domicilios,id'
+            'domicilio.tipo_domicilio_id' => 'sometimes|required|exists:tipo_domicilios,id',
+            'perfil_id' => 'sometimes|numeric',
         ]);
 
         // Iniciar transacción para asegurar la integridad de los datos
         DB::beginTransaction();
         
         try {
+        
             // Actualizar datos personales
             if ($request->hasAny(['nombre', 'apellido', 'fecha_nacimiento'])) {
                 $user->persona->update([
@@ -159,6 +203,37 @@ class UserModuleController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+
+    public function updateEstado(Request $request, $id)
+    {
+        $request->validate([
+            'estado' => 'required|numeric',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        DB::beginTransaction();
+        try{
+            $user->update([
+                'estado' => $request->estado,
+            ]);
+            DB::commit();
+
+            return response()->json([
+                'success' => 'se ha cambiado el estado con exito'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar el perfil',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+        
     }
 
     /**

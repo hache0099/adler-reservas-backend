@@ -10,6 +10,7 @@ Route::prefix('v1/gestion')->group(function () {
     Route::get('/tipos-cancha', [GestionController::class, 'getTiposCancha']);
     Route::get('/get-modulos', [GestionController::class, 'getModulos']);
     Route::get('/get-all-modulos', [GestionController::class, 'getAllModulos']);
+    Route::get('/get-perfiles',[GestionController::class, 'getPerfiles']);
     
 });
 

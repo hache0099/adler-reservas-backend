@@ -5,7 +5,7 @@ namespace Modules\Gestion\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\{Modulo, TipoDocumento, TipoContacto, TipoDomicilio, TipoCancha};
+use App\Models\{Modulo, Perfile, TipoDocumento, TipoContacto, TipoDomicilio, TipoCancha};
 
 class GestionController extends Controller
 {
@@ -34,8 +34,9 @@ class GestionController extends Controller
             'gestion indice',
             'gestion socios',
             'gestion de fotos de canchas',
-            'gestion horarios de canchas',   
+            'gestion de horarios de canchas',   
             'gestion de empleados',
+            'gestion de ingresos y egresos'
         ];
         return Modulo::where('ruta','like','/gestion/%')
         ->get(['id', 'descripcion', 'ruta'])
@@ -46,5 +47,10 @@ class GestionController extends Controller
 
     public function getAllModulos(){
         return Modulo::get(['id', 'descripcion', 'ruta']);
+    }
+
+    public function getPerfiles()
+    {
+        return Perfile::all();
     }
 }

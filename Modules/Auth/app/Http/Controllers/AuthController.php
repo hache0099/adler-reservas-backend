@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Validator;
 
+use Illuminate\Support\Facades\Password;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -35,7 +38,7 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         Auth::user()->tokens()->delete();
-        return response()->json(['message' => 'Sesión cerrada']);
+        return response()->json(['message' => 'Sesión cerrada'],200);
     }
 
     /**
@@ -152,9 +155,51 @@ class AuthController extends Controller
 
     public function checkEmailExists(Request $request)
     {
-        
-        return response()->json([
-            'exists' => User::where('email', $request->email)->exists(),
+        $request->validate([
+            'email' => 'required|email',
         ]);
+        
+        $emailExists = User::where('email', $request->email)
+                        //->where('estado', 1)
+                        ->exists();
+                        
+        return response()->json([
+            'exists' => $emailExists,
+        ]);
+    }
+
+    public function resetUserPassword($id) {
+        $user = User::with('persona.persona_documento')->findOrFail($id);
+
+        $user->update(['password' => Hash::make($user->persona->persona_documento->descripcion)]);
+
+        return response()->json([], 200);
+    }
+
+    public function sendPasswordEmail(Request $request) {
+        $request->validate(['email' => 'required|email']);
+        $status = Password::sendResetLink($request->only('email'));
+
+        return $status === Password::RESET_LINK_SENT
+            ? response()->json(['message' => '¡Enlace de reseteo enviado!'], 200)
+            : response()->json(['message' => 'No se puede enviar el enlace de reseteo.'], 400);
+    }
+
+    public function resetPassword(Request $request) {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        $status = Password::reset($request->all(), function ($user, $password) {
+            $user->forceFill([
+                'password' => bcrypt($password)
+            ])->save();
+        });
+
+        return $status === Password::PASSWORD_RESET
+            ? response()->json(['message' => '¡Contraseña reseteada con éxito!'], 200)
+            : response()->json(['message' => 'Token inválido.'], 400);
     }
 }

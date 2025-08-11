@@ -24,4 +24,12 @@ class ReservaTest extends TestCase
         //dd($response->json());
         $response->assertStatus(200);
     }
+
+    public function test_reservas_hoy()
+    {
+        $response = $this->get('/api/v1/reservas/reservas-por-fecha');
+
+        //dd($response->json());
+        $response->assertStatus(200);
+    }
 }

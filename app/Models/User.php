@@ -7,11 +7,13 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\Base\User as BaseUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+//use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Notifications\CustomResetPasswordNotification;
 /**
  * Class User
  * 
@@ -31,7 +33,7 @@ use Laravel\Sanctum\HasApiTokens;
  *
  * @package App\Models
  */
-class User extends Authenticatable
+class User extends BaseUser
 {
 	use HasApiTokens, HasFactory, Notifiable;
 	
@@ -50,6 +52,7 @@ class User extends Authenticatable
 
 	protected $fillable = [
 		'email',
+		'estado',
 		'email_verified_at',
 		'password',
 		'remember_token',
@@ -65,5 +68,16 @@ class User extends Authenticatable
 	public function persona()
 	{
 		return $this->belongsTo(Persona::class);
+	}
+
+	/**
+		* Enviar la notificación de reseteo de contraseña.
+		*
+		* @param  string  $token
+		* @return void
+		*/
+	public function sendPasswordResetNotification($token)
+	{
+		$this->notify(new CustomResetPasswordNotification($token));
 	}
 }

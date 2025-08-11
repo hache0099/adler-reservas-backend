@@ -6,10 +6,12 @@ use Modules\Auth\Http\Controllers\AuthController;
 Route::prefix('v1/auth')->group(function () {
     Route::apiResource('auth', AuthController::class)->names('auth');
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user'])->middleware('auth:sanctum');
     Route::post('/register', [AuthController::class, 'register']);
-
+    Route::post('/user/{id}/reset-password', [AuthController::class, 'resetUserPassword']);
+    Route::post('/forgot-password', [AuthController::class, 'sendPasswordEmail']);
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
     Route::get('/get-tablas-maestras', [AuthController::class, 'getTablasMaestras']);
     Route::get('/get-tipo-documento', [AuthController::class, 'getTiposDocumento']);

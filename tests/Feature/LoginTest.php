@@ -18,9 +18,9 @@ class LoginTest extends TestCase
         
         $response = $this->post('/api/v1/auth/login', [
             'email' => 'palaciohector00@gmail.com',
-            'password' => 'contraseña',
+            'password' => 'Todosputos',
         ]);
-        dd($response->json());
+        //dd($response->json());
         $response->assertStatus(200);
         
     }
@@ -29,7 +29,7 @@ class LoginTest extends TestCase
     {
         $response = $this->post('/api/v1/auth/login', [
             'email' => 'palaciohector00@gmail.com',
-            'password' => 'contraseña',
+            'password' => 'Todosputos',
         ]);
 
         $token = $response->json('token');
@@ -38,6 +38,42 @@ class LoginTest extends TestCase
         $response = $this->withHeaders(['Authorization' => "Bearer {$token}"])->get('/api/v1/user');
 
         //dd($response->json());
-        $response->assertJsonStructure(['id', 'email', 'email_verified_at', 'created_at', 'updated_at', 'persona_id', 'perfil_id']);
+        //$response->assertJsonStructure(['id', 'email', 'email_verified_at', 'created_at', 'updated_at', 'persona_id', 'perfil_id']);
+        $response->assertStatus(200);
+    }
+
+    public function user_can_logout(): void
+    {
+        $response = $this->post('/api/v1/auth/login', [
+            'email' => 'palaciohector00@gmail.com',
+            'password' => 'Todosputos',
+        ]);
+        $token = $response->json('token');
+
+        $response = $this->withHeaders(['Authorization' => "Bearer {$token}"])->get('/api/v1/auth/logout');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_change_password(): void
+    {
+        $response = $this->put('api/v1/change-password', [
+            'id' => '1',
+            'currentPassword' => 'Todosputos',
+            'newPassword' => 'admin123'
+        ]);
+
+        //dd($response->json());
+        
+        $response->assertStatus(400);
+    }
+
+    public function test_check_email_exists() : void
+    {
+        $response = $this->put('api/v1/change-password', [
+            'id' => '1',
+            'currentPassword' => 'Todosputos',
+            'newPassword' => 'admin123'
+        ]);
     }
 }

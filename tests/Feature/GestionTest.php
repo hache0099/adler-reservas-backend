@@ -15,7 +15,7 @@ class GestionTest extends TestCase
     {
         $response = $this->get('/api/v1/gestion/get-modulos');
 
-        dd($response->json());
+        //dd($response->json());
         $response->assertStatus(200);
     }
 }

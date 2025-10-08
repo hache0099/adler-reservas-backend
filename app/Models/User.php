@@ -11,6 +11,8 @@ use App\Models\Base\User as BaseUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 //use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\VerifyEmailNotification;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Notifications\CustomResetPasswordNotification;
@@ -33,9 +35,9 @@ use App\Notifications\CustomResetPasswordNotification;
  *
  * @package App\Models
  */
-class User extends BaseUser
+class User extends BaseUser implements MustVerifyEmail
 {
-	use HasApiTokens, HasFactory, Notifiable;
+	use HasApiTokens, HasFactory, Notifiable, \Illuminate\Auth\MustVerifyEmail;
 	
 	protected $table = 'users';
 
@@ -80,4 +82,17 @@ class User extends BaseUser
 	{
 		$this->notify(new CustomResetPasswordNotification($token));
 	}
+	
+	
+	/**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification);
+    }
+	
 }
+

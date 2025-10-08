@@ -1,0 +1,11 @@
+{
+    "name": "Membresia",
+    "alias": "membresia",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Membresia\\Providers\\MembresiaServiceProvider"
+    ],
+    "files": []
+}

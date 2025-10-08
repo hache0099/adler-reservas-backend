@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/membresia",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Membresia\\": "app/",
+            "Modules\\Membresia\\Database\\Factories\\": "database/factories/",
+            "Modules\\Membresia\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Membresia\\Tests\\": "tests/"
+        }
+    }
+}

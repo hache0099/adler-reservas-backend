@@ -10,6 +10,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Base\Modulo as BaseModulo;
+//use App\Models\ClasificacionModulo;
+
 /**
  * Class Modulo
  * 
@@ -23,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Modulo extends Model
+class Modulo extends BaseModulo
 {
 	protected $table = 'modulos';
 
@@ -32,8 +35,8 @@ class Modulo extends Model
 		'ruta'
 	];
 
-	public function perfil_modulos()
+	/*public function perfil_modulos()
 	{
 		return $this->hasMany(PerfilModulo::class);
-	}
+	}*/
 }

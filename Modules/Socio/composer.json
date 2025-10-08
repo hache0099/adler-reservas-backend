@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/socio",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Socio\\": "app/",
+            "Modules\\Socio\\Database\\Factories\\": "database/factories/",
+            "Modules\\Socio\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Socio\\Tests\\": "tests/"
+        }
+    }
+}

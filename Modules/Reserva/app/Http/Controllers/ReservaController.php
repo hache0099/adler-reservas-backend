@@ -39,7 +39,7 @@ class ReservaController extends Controller
                 $query->where('hora_desde', '<=', $validated["hora"])
                       ->where('hora_hasta', '>=', $validated["hora"]);
             })
-            ->with(['precioActual', 'tipo_cancha', 'horario_canchas'])
+            ->with(['precio_actual', 'tipo_cancha', 'horario_canchas'])
             ->get()
             ->reject(function (Cancha $cancha) use ($reservas) {
                 return in_array($cancha->id, $reservas->pluck('cancha_id')->toArray());
@@ -99,7 +99,8 @@ class ReservaController extends Controller
             ->with([
                 'estado_pago', 
                 'estado_reserva', 
-                'cancha.tipo_cancha'
+                'cancha.tipo_cancha',
+                'user.persona.persona_documento',
             ])
             ->get();
     }
@@ -134,7 +135,7 @@ class ReservaController extends Controller
                 'cancha_id' => $request->cancha,
                 'user_id' => $request->user,
                 'porcentaje_sena_id' => 1,
-                'monto_total' => $cancha->precioActual->precio,
+                'monto_total' => $cancha->precio_actual->precio,
             ]);
             return $nuevaReservaid;
         } catch (Throwable $e) {

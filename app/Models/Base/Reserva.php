@@ -7,6 +7,7 @@
 namespace App\Models\Base;
 
 use App\Models\Cancha;
+use App\Models\DetallePago;
 use App\Models\EstadoPago;
 use App\Models\EstadoReserva;
 use App\Models\IngresoEgreso;
@@ -37,6 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property EstadoReserva $estado_reserva
  * @property PorcentajeSena $porcentaje_sena
  * @property User $user
+ * @property Collection|DetallePago[] $detalle_pagos
  * @property Collection|IngresoEgreso[] $ingreso_egresos
  *
  * @package App\Models\Base
@@ -80,6 +82,11 @@ class Reserva extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class);
+	}
+
+	public function detalle_pagos()
+	{
+		return $this->hasMany(DetallePago::class, 'reservas_id');
 	}
 
 	public function ingreso_egresos()

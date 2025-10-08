@@ -9,6 +9,8 @@ namespace App\Models\Base;
 use App\Models\Perfile;
 use App\Models\Persona;
 use App\Models\Reserva;
+use App\Models\Socio;
+use App\Models\ConfirmacionPagoEfectivo;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +32,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Perfile $perfile
  * @property Persona $persona
  * @property Collection|Reserva[] $reservas
+ * @property Collection|Socio[] $socios
  *
  * @package App\Models\Base
  */
@@ -57,4 +60,14 @@ class User extends Authenticatable
 	{
 		return $this->hasMany(Reserva::class);
 	}
+
+	public function socios()
+	{
+		return $this->hasMany(Socio::class, 'users_id');
+	}
+  
+  public function pagos_efectivo()
+  {
+    return $this->hasMany(ConfirmacionPagoEfectivo::class, 'user_id');
+  }
 }

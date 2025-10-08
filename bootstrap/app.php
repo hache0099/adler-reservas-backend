@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
+		$middleware->group('api', [
+			\App\Http\Middleware\CorsMiddleware::class,
+		]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

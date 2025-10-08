@@ -1,0 +1,11 @@
+{
+    "name": "Socio",
+    "alias": "socio",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Socio\\Providers\\SocioServiceProvider"
+    ],
+    "files": []
+}

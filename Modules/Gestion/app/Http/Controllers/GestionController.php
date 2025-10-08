@@ -5,7 +5,7 @@ namespace Modules\Gestion\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\{Modulo, Perfile, TipoDocumento, TipoContacto, TipoDomicilio, TipoCancha};
+use App\Models\{Modulo, Perfile, TipoDocumento, TipoContacto, TipoDomicilio, TipoCancha, ClasificacionModulo};
 
 class GestionController extends Controller
 {
@@ -28,18 +28,25 @@ class GestionController extends Controller
     {
         return TipoCancha::where('estado', 1)->get(['id', 'material']);
     }
+	
+	public function getClasificacionModulos()
+	{
+		return ClasificacionModulo::all();
+	}
+	
 
     public function getModulos(){
         $rechazados = [
             'gestion indice',
-            'gestion socios',
+            //'gestion socios',
             'gestion de fotos de canchas',
             'gestion de horarios de canchas',   
             'gestion de empleados',
             'gestion de ingresos y egresos'
         ];
         return Modulo::where('ruta','like','/gestion/%')
-        ->get(['id', 'descripcion', 'ruta'])
+		->with('clasificacion_modulo')
+        ->get(['id', 'descripcion', 'ruta', 'clasificacion_modulos_id',])
         ->reject(function ($modulo) use ($rechazados){
             return in_array(strtolower($modulo->descripcion), $rechazados);
         });

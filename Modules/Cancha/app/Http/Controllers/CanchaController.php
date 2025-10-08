@@ -20,7 +20,7 @@ class CanchaController extends Controller
             'estado_cancha:id,descripcion',
             'horario_canchas:id,hora_desde,hora_hasta,cancha_id',
         ])
-        ->get(['id', 'max_personas', 'tipo_cancha_id', 'estado_cancha_id']);
+        ->get(['id', 'max_personas', 'tipo_cancha_id','estado_cancha_id','ubicacion_descripcion',]);
     }
 
     /**
@@ -34,6 +34,7 @@ class CanchaController extends Controller
             'estado_cancha_id' => 'required|exists:estado_canchas,id',
             'hora_desde' => 'required|integer|min:0|max:23',
             'hora_hasta' => 'required|integer|min:1|max:23|gt:hora_desde',
+			'ubicacion_descripcion' => 'nullable|string|max:255',
         ]);
 
         try {
@@ -43,6 +44,7 @@ class CanchaController extends Controller
                 'max_personas' => $validated['max_personas'],
                 'tipo_cancha_id' => $validated['tipo_cancha_id'],
                 'estado_cancha_id' => $validated['estado_cancha_id'],
+				'ubicacion_descripcion' => $validated['ubicacion_descripcion'] ?? null,
             ]);
 
             HorarioCancha::create([
@@ -79,6 +81,7 @@ class CanchaController extends Controller
             'estado_cancha_id' => 'required|exists:estado_canchas,id',
             'hora_desde' => 'required|integer|min:0|max:23',
             'hora_hasta' => 'required|integer|min:1|max:23|gt:hora_desde',
+			'ubicacion_descripcion' => 'nullable|string|max:255'
         ]);
 
         try {
@@ -89,6 +92,7 @@ class CanchaController extends Controller
                 'max_personas' => $validated['max_personas'],
                 'tipo_cancha_id' => $validated['tipo_cancha_id'],
                 'estado_cancha_id' => $validated['estado_cancha_id'],
+				'ubicacion_descripcion' => $validated['ubicacion_descripcion'] ?? null,
             ]);
 
             $horario = HorarioCancha::where('cancha_id', $cancha->id)->first();

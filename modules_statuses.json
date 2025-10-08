@@ -3,5 +3,7 @@
     "UserModule": true,
     "Gestion": true,
     "Reserva": true,
-    "Cancha": true
+    "Cancha": true,
+    "Membresia": true,
+    "Socio": true
 }

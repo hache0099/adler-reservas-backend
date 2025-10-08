@@ -6,6 +6,7 @@
 
 namespace App\Models\Base;
 
+use App\Models\CanchaBarrio;
 use App\Models\CanchaFoto;
 use App\Models\DiasNoDisponible;
 use App\Models\EstadoCancha;
@@ -24,11 +25,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $max_personas
  * @property int $tipo_cancha_id
  * @property int $estado_cancha_id
+ * @property int $cancha_barrio_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
  * @property EstadoCancha $estado_cancha
  * @property TipoCancha $tipo_cancha
+ * @property CanchaBarrio $cancha_barrio
  * @property Collection|CanchaFoto[] $cancha_fotos
  * @property Collection|DiasNoDisponible[] $dias_no_disponibles
  * @property Collection|HorarioCancha[] $horario_canchas
@@ -44,7 +47,8 @@ class Cancha extends Model
 	protected $casts = [
 		'max_personas' => 'int',
 		'tipo_cancha_id' => 'int',
-		'estado_cancha_id' => 'int'
+		'estado_cancha_id' => 'int',
+		'cancha_barrio_id' => 'int'
 	];
 
 	public function estado_cancha()
@@ -55,6 +59,11 @@ class Cancha extends Model
 	public function tipo_cancha()
 	{
 		return $this->belongsTo(TipoCancha::class);
+	}
+
+	public function cancha_barrio()
+	{
+		return $this->belongsTo(CanchaBarrio::class);
 	}
 
 	public function cancha_fotos()
@@ -80,10 +89,5 @@ class Cancha extends Model
 	public function reservas()
 	{
 		return $this->hasMany(Reserva::class);
-	}
-
-	public function precioActual()
-	{
-		return $this->hasOne(PrecioCancha::class)->latest('fecha_inicio');
 	}
 }
